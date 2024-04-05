@@ -2,7 +2,6 @@ def isReqLine(req: str) -> bool:
     reqLine = req.split('\r\n')[0]
     method = reqLine.split()[0]
     if (method != 'GET' and method != 'POST' and method != 'PUT' and method != 'DELETE') or len(reqLine.split(' ')) != 3:
-        print(f"{reqLine.split()[0]}, {reqLine.split()[0] != 'POST'}, {len(reqLine.split(' '))}\n")
         return False
     
     return True
