@@ -12,12 +12,23 @@ reqKeep = 'Keep-Alive: timeout=5,max=1000\r\n'
 reqLen = 'Content-Length: 10101\r\n'
 reqEnd = '\r\n'
 
+# Header:
+# Request line
+# Header (fields)
+# \n
+
 req = reqLine + reqHost + reqConn + reqKeep + reqLen + reqEnd
 
 def persistent():
+	# SOCK_STREAM for TCP mode
     sock = socket(AF_INET, SOCK_STREAM)
+    # Try to connect to the specified server
     sock.connect((HOST, PORT))
-
+		
+	# Never close connection till timeout
+	# ... or it exceeds req limit
+	# Response time: 2RTT + n * transmission time
+		
     t1 = time.time()
     print(('Requesting #1'))
     sock.send(req.encode())
@@ -40,8 +51,13 @@ def persistent():
 
 def nonPersistent():
     t1 = time.time()
-
+	# SOCK_STREAM for TCP connection
     sock = socket(AF_INET, SOCK_STREAM)
+    
+    # Open / Close connection per every request
+	# Response time: n * (2RTT + transmission time)
+    
+    # Try to connect to the specified server
     sock.connect((HOST, PORT))
     print(('Requesting #1'))
     sock.send(req.encode())

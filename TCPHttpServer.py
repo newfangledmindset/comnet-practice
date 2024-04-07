@@ -4,8 +4,14 @@ import time
 import argparse
 
 def parseHeader(conn: socket):
+
+	# Since the connection has been established, you don't need to specify receiver from now on.
+ 
     rawReq = conn.recv(1024)
     req = rawReq.decode()
+    
+    # See spec.pdf
+    
     if not req:
         return
     method = req.split()[0]
@@ -26,6 +32,11 @@ def parseHeader(conn: socket):
                 conn.send('HTTP/0.1 404 Not Found'.encode())
 
 def persistentConn(sock: socket, timeout: int):
+
+	# Never close connection till timeout
+	# ... or it exceeds req limit
+	# Response time: 2RTT + n * transmission time
+ 
     t1 = time.time()
     conn, addr = sock.accept()
     print('Connection established.')
@@ -38,6 +49,10 @@ def persistentConn(sock: socket, timeout: int):
     print('Connection Lost.')
 
 def nonPersistentConn(sock: socket):
+
+	# Open / Close connection per every request
+	# Response time: n * (2RTT + transmission time)
+ 
     while True:
         conn, addr = sock.accept()
         print('Connection established.')
@@ -51,6 +66,9 @@ if __name__ == '__main__':
     parser.add_argument('-np', action='store_true')
     args = parser.parse_args()
     PORT = 12000
+
+    # SOCK_STREAM for TCP mode
+
     SOCKET = socket(AF_INET, SOCK_STREAM)
     SOCKET.bind(('', PORT))
     SOCKET.listen(1)

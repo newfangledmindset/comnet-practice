@@ -7,6 +7,9 @@ SOCKET.bind(('', PORT))
 print("The server is ready to receive")
 
 while True:
+
+    # Receives req from every single client
+
     rawReq, clientAddress = SOCKET.recvfrom(2048)
     req = rawReq.decode()
     method = req.split()[0]

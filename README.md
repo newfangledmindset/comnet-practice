@@ -6,3 +6,6 @@ Computer Network (CC: 101609) Practice
 -np: Non-persistent TCP mode
 -p: Persistent TCP mode
 ```
+
+## TODOs
+- Support for 'Pipelining TCP connection'
