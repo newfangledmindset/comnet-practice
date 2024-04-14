@@ -20,9 +20,12 @@ reqEnd = '\r\n'
 req = reqLine + reqHost + reqConn + reqKeep + reqLen + reqEnd
 
 def persistent():
+    
 	# SOCK_STREAM for TCP mode
     sock = socket(AF_INET, SOCK_STREAM)
+
     # Try to connect to the specified server
+
     sock.connect((HOST, PORT))
 		
 	# Never close connection till timeout
@@ -51,13 +54,16 @@ def persistent():
 
 def nonPersistent():
     t1 = time.time()
+
 	# SOCK_STREAM for TCP connection
+ 
     sock = socket(AF_INET, SOCK_STREAM)
     
     # Open / Close connection per every request
 	# Response time: n * (2RTT + transmission time)
     
     # Try to connect to the specified server
+
     sock.connect((HOST, PORT))
     print(('Requesting #1'))
     sock.send(req.encode())
